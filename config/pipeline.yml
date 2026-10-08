@@ -1,0 +1,18 @@
+version: "1.0"
+pipeline:
+  - id: retrieve
+    module: retrieval.engine
+  - id: verify
+    module: verification.verifier
+  - id: reason
+    module: reasoning.legal_reasoner
+  - id: draft
+    module: drafting.legal_drafter
+  - id: response
+    rule: "أخرج النص مع المصادر والتحذيرات، ولا تختلق مرجعاً."
+
+quality_gate:
+  require_current_verified_source_for_final_draft: true
+  require_source_citation: true
+  require_uncertainty_disclosure: true
+  forbid_invented_authority: true
