@@ -24,3 +24,7 @@ jobs:
         run: python tests/test_drafting.py
       - name: Run case engine tests
         run: python tests/test_case_engine.py
+      - name: Run manifest tests
+        run: python tests/test_manifest.py
+      - name: Build corpus manifest
+        run: python ingestion/corpus_manifest.py --output /tmp/corpus-manifest.json
