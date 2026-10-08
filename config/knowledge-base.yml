@@ -1,0 +1,65 @@
+version: "1.0"
+project:
+  name: "المساعد القانوني اليمني المتخصص"
+  repository: "hassenozon-prog/Hassen"
+  default_branch: "main"
+  language: "ar"
+  jurisdiction: "اليمن"
+
+knowledge_roots:
+  laws:
+    path: "laws/"
+    purpose: "النصوص القانونية والمواد والتعديلات"
+  principles:
+    path: "principles/"
+    purpose: "مبادئ وأحكام المحكمة العليا وقواعد النقض"
+  cases:
+    path: "cases/"
+    purpose: "سجلات القضايا والوقائع والنماذج"
+  fiqh:
+    path: "fiqh/"
+    purpose: "الأصول والقواعد الفقهية ذات الصلة"
+  sources:
+    path: "sources/"
+    purpose: "المصادر الرسمية وسجلات التحقق"
+  research:
+    path: "research/"
+    purpose: "مصفوفات المسائل والربط والتحقق"
+  schemas:
+    path: "schemas/"
+    purpose: "مخططات البيانات وقواعد الفهرسة"
+  docs:
+    path: "docs/"
+    purpose: "وثائق التشغيل والهندسة"
+
+record_metadata:
+  required:
+    - title
+    - jurisdiction
+    - source_type
+    - verification_status
+    - effective_status
+  recommended:
+    - law_number
+    - year
+    - article
+    - source_url
+    - source_date
+    - notes
+
+verification_status:
+  - verified
+  - partially-verified
+  - needs-verification
+  - historical
+  - superseded
+
+retrieval:
+  primary_formats:
+    - markdown
+    - yaml
+    - json
+  exact_article_match: true
+  preserve_source_path: true
+  preserve_article_number: true
+  return_source_metadata: true
