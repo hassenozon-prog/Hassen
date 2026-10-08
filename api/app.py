@@ -10,6 +10,7 @@ from pathlib import Path
 from retrieval.engine import LegalRetriever, answer_context
 from reasoning.legal_reasoner import build_reasoning
 from drafting.legal_drafter import draft
+from verification.verifier import verify
 
 ROOT = Path(__file__).resolve().parents[1]
 retriever = LegalRetriever(ROOT)
@@ -65,6 +66,7 @@ class Handler(BaseHTTPRequestHandler):
 
         results = retriever.search(question, limit=limit)
         context = answer_context(results)
+        verification = verify(results)
         reasoning = build_reasoning(
             question,
             results,
@@ -82,7 +84,7 @@ class Handler(BaseHTTPRequestHandler):
                 "sources": context["sources"],
                 "context": context["context"],
             },
-            "reasoning": reasoning,\n            "drafting": drafting,
+            "verification": verification,\n            "reasoning": reasoning,\n            "drafting": drafting,
             "notice": "هذه الطبقة تسترجع المصادر وتنظم الاستدلال ولا تغني عن التحقق من المصدر الرسمي والنفاذ والتعديلات.",
         })
 
