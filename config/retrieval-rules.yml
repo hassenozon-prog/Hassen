@@ -1,0 +1,44 @@
+version: "1.0"
+query_processing:
+  normalize_arabic: true
+  preserve_article_numbers: true
+  preserve_law_numbers: true
+  preserve_case_numbers: true
+  extract_legal_terms: true
+
+query_expansion:
+  "المداولة": ["المداولة", "سرية المداولة", "المداولة بين القضاة"]
+  "دليل لم يطرح في الجلسة": ["دليل لم يقدم في الجلسة", "دليل لم يطرح في الجلسة", "المادة 367"]
+  "منازعة تنفيذ وقتية": ["منازعة تنفيذ", "المادة 499", "التنفيذ المؤقت"]
+  "بطلان الحكم": ["بطلان الحكم", "المادة 222", "المادة 368"]
+
+retrieval_order:
+  - exact_article
+  - exact_law
+  - related_articles
+  - supreme_court_principles
+  - cassation_templates
+  - case_records
+  - fiqh
+  - research_notes
+
+cross_link_rules:
+  law_article_to_principles: true
+  law_article_to_cassation: true
+  law_article_to_related_articles: true
+  case_to_evidence: true
+  case_to_applicable_law: true
+  source_to_verification_record: true
+
+temporal_rules:
+  check_amendments_before_answer: true
+  check_effective_status: true
+  flag_historical_text: true
+  never_treat_superseded_text_as_current: true
+
+answer_rules:
+  return_only_supported_claims: true
+  distinguish_text_from_analysis: true
+  distinguish_fact_from_inference: true
+  disclose_missing_source_text: true
+  missing_source_phrase: "لم أعثر على النص في المصادر المتاحة"
