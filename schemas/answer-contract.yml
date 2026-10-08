@@ -1,0 +1,13 @@
+version: "1.0"
+response:
+  required:
+    - question
+    - issue_type
+    - sources
+    - reasoning
+    - warnings
+  fields:
+    sources: "قائمة المصادر المسترجعة مع حالة التحقق والنفاذ"
+    reasoning: "القواعد القانونية المدعومة"
+    warnings: "نقاط عدم اليقين والتحقق"
+    draft: "مسودة اختيارية لا تنشأ إلا من مصادر متحققة"
