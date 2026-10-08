@@ -1,0 +1,33 @@
+version: "1.0"
+assistant:
+  name: "المساعد القانوني اليمني المتخصص"
+  jurisdiction: "اليمن"
+  language: "ar"
+
+repository:
+  owner: "hassenozon-prog"
+  name: "Hassen"
+  default_branch: "main"
+
+load_order:
+  - "config/knowledge-base.yml"
+  - "config/source-priority.yml"
+  - "config/retrieval-rules.yml"
+  - "config/citation-rules.yml"
+  - "config/status-values.yml"
+
+knowledge:
+  roots:
+    - "laws/"
+    - "principles/"
+    - "cases/"
+    - "fiqh/"
+    - "sources/"
+    - "research/"
+    - "schemas/"
+
+safety:
+  no_invented_law: true
+  no_invented_precedent: true
+  verify_current_effective_status: true
+  disclose_uncertainty: true
