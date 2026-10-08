@@ -1,0 +1,26 @@
+{
+  "name": "yemeni-legal-assistant-api",
+  "version": "1.0",
+  "endpoints": {
+    "GET /health": {
+      "response": {
+        "status": "ok",
+        "service": "yemeni-legal-assistant",
+        "indexed_chunks": "integer"
+      }
+    },
+    "POST /query": {
+      "request": {
+        "question": "string",
+        "facts": "array",
+        "requested_relief": "string|null",
+        "limit": "integer 1..20"
+      },
+      "response": {
+        "retrieval": "object",
+        "reasoning": "object",
+        "notice": "string"
+      }
+    }
+  }
+}
