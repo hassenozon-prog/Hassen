@@ -1,0 +1,17 @@
+version: "1.0"
+draft_modes:
+  cassation_ground:
+    label: "سبب طعن بالنقض"
+    required_inputs: ["question", "facts"]
+  defense:
+    label: "مذكرة دفاع"
+    required_inputs: ["question", "facts"]
+  prosecution_decision:
+    label: "قرار نيابة"
+    required_inputs: ["question", "facts"]
+  judgment_reasons:
+    label: "حيثيات وأسباب حكم"
+    required_inputs: ["question", "facts"]
+  legal_answer:
+    label: "جواب قانوني"
+    required_inputs: ["question"]
