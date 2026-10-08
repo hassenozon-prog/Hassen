@@ -1,0 +1,44 @@
+version: "1.0"
+text_authority:
+  - rank: 1
+    source_type: "official_yemeni_statute"
+    rule: "النص الرسمي للقانون اليمني وتعديلاته النافذة."
+  - rank: 2
+    source_type: "official_yemeni_regulation"
+    rule: "اللائحة أو القرار الوزاري/التنفيذي الرسمي."
+  - rank: 3
+    source_type: "yemeni_supreme_court_published_principle"
+    rule: "المبادئ والأحكام المنشورة الموثقة للمحكمة العليا."
+  - rank: 4
+    source_type: "official_yemeni_authority"
+    rule: "وزارة العدل والنيابة والجهات الحكومية الرسمية."
+  - rank: 5
+    source_type: "yemeni_legal_research"
+    rule: "البحوث والشروح اليمنية مع التمييز بينها وبين النص الملزم."
+  - rank: 6
+    source_type: "fiqh"
+    rule: "المصادر الفقهية للاستئناس والتأصيل، لا لاستبدال النص اليمني النافذ."
+
+reasoning_hierarchy:
+  - rank: 1
+    source_type: "quran_sunnah"
+    use: "التأصيل الشرعي عند صلته بالمسألة."
+  - rank: 2
+    source_type: "relevant_fiqh"
+    use: "القواعد والأصول الفقهية ذات الصلة."
+  - rank: 3
+    source_type: "yemeni_constitution_and_statutes"
+    use: "تطبيق الحكم القانوني اليمني النافذ."
+  - rank: 4
+    source_type: "supreme_court_principles"
+    use: "دعم التفسير القضائي متى كان المبدأ موثقاً."
+  - rank: 5
+    source_type: "other_jurisprudence"
+    use: "شرح وتحليل إضافي فقط."
+
+conflict_policy:
+  official_current_text_over_unverified_copy: true
+  later_amendment_over_earlier_text: true
+  specific_provision_over_general_provision: true
+  verified_supreme_court_principle_over_unverified_attribution: true
+  never_invent_precedent: true
