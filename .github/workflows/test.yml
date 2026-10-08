@@ -22,3 +22,5 @@ jobs:
         run: python tests/test_verification.py
       - name: Run drafting tests
         run: python tests/test_drafting.py
+      - name: Run case engine tests
+        run: python tests/test_case_engine.py
