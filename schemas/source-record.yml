@@ -1,0 +1,15 @@
+version: "1.0"
+required:
+  - path
+  - title
+  - source_type
+  - verification_status
+  - effective_status
+fields:
+  official_url: "المصدر الرسمي إن وجد"
+  law_name: "اسم القانون"
+  law_number: "رقم القانون"
+  year: "السنة"
+  article: "رقم المادة"
+  verified_on: "تاريخ آخر تحقق"
+  supersedes: "السجل أو النص الذي تم استبداله"
