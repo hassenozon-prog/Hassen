@@ -1,0 +1,25 @@
+version: "1.0"
+description: "سجل مركزي للمصادر القانونية التي يجب جمعها والتحقق منها"
+
+source_classes:
+  official_yemeni_statute:
+    priority: 100
+    requires: ["official_url","law_name","law_number","year"]
+  supreme_court_precedent:
+    priority: 95
+    requires: ["official_url","decision_number","case_number","hearing_date"]
+  official_ministry:
+    priority: 90
+    requires: ["official_url","title"]
+  prosecution:
+    priority: 90
+    requires: ["official_url","title"]
+  fiqh:
+    priority: 70
+    requires: ["work","author","edition_or_source"]
+
+collection_policy:
+  - "لا يضاف نص قانوني نهائي دون مصدر أو سجل تحقق."
+  - "يسجل تاريخ آخر تحقق من النفاذ."
+  - "يسجل النص المستبدل عند وجود تعديل."
+  - "تظل المراجع غير المتحققة في حالة needs-verification."
