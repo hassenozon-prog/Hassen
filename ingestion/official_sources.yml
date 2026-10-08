@@ -1,0 +1,14 @@
+version: "1.0"
+sources:
+  - id: moj-laws
+    authority: "وزارة العدل وحقوق الإنسان اليمنية"
+    url: "https://moj.gov.ye/LawsM"
+    type: official_yemeni_statutes
+    status: active
+    note: "فهرس رسمي للقوانين والتشريعات."
+  - id: moj-texts
+    authority: "وزارة العدل وحقوق الإنسان اليمنية"
+    url: "https://www.moj-ye.org/laws.php"
+    type: legal_texts
+    status: active
+    note: "خدمة نصوص قانونية؛ يستخدم النص بعد التحقق من المصدر والحالة."
