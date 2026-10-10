@@ -34,5 +34,9 @@ jobs:
         run: python tools/rebuild_indexes.py --check
       - name: Validate legal source verification register
         run: python tools/validate_source_register.py
+      - name: Validate article-level verification register
+        run: python tools/validate_article_register.py
+      - name: Test article register validator
+        run: python tests/test_article_register.py
       - name: Build corpus manifest
         run: python ingestion/corpus_manifest.py --output /tmp/corpus-manifest.json
