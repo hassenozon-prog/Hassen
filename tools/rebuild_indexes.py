@@ -26,7 +26,15 @@ PRECEDENT = "لا يعتمد كمبدأ قضائي موثق قبل التحقق 
 STATUS_NOTE = "الحالة تعكس بيانات المستودع ومساراته فقط، وليست شهادة مستقلة بنفاذ القانون."
 
 def paths(root: Path) -> list[str]:
-    return sorted({p.relative_to(root).as_posix() for top in ROOTS if (root/top).exists() for p in (root/top).rglob("*") if p.is_file()})
+    ignored_dirs = {"__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache"}
+    return sorted({
+        p.relative_to(root).as_posix()
+        for top in ROOTS if (root/top).exists()
+        for p in (root/top).rglob("*")
+        if p.is_file()
+        and not any(part in ignored_dirs for part in p.relative_to(root).parts)
+        and p.suffix not in {".pyc", ".pyo"}
+    })
 
 def title(path: str) -> str:
     for part in path.split("/"):
