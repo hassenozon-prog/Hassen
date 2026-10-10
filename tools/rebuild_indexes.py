@@ -20,8 +20,8 @@ LAWS = [
 ("personal-status","تشريعات الأحوال الشخصية","","","needs-verification"),
 ("water","تشريعات المياه","","","needs-verification")]
 NAMES = {x[0]:x[1] for x in LAWS}
-UNKNOWN = "فهرسة بنيوية من مسار الملف؛ لا تثبت وحدها صحة المحتوى أو نفاذ التشريع أو حجية السابقة."
-PARTIAL = "وصف التحقق الجزئي من بيانات المشروع فقط؛ يلزم الرجوع إلى المصدر الرسمي والتحقق من التعديلات والنفاذ."
+UNKNOWN = "فهرسة بنيوية من مسار الملف في المستودع؛ لا تثبت وحدها صحة المحتوى أو نفاذ التشريع أو حجية السابقة."
+PARTIAL = "وصف التحقق الجزئي من مخطط المستودع فقط؛ يلزم الرجوع إلى المصدر الرسمي والتحقق من التعديلات والنفاذ."
 PRECEDENT = "لا يعتمد كمبدأ قضائي موثق قبل التحقق من أصل الحكم ورقمه وتاريخه ودائرته ومضمونه."
 STATUS_NOTE = "الحالة تعكس بيانات المستودع ومساراته فقط، وليست شهادة مستقلة بنفاذ القانون."
 
@@ -67,7 +67,7 @@ def build_status(root: Path) -> str:
     rows = [STATUS_HEADER]
     for key,name,num,year,state in LAWS:
         matched = "; ".join(p for p in all_paths if p.startswith("laws/"+key+"/"))
-        rows.append([key,name,num,year,matched,state,"unknown","https://www.moj-ye.org/laws.php","","التحقق من النسخة الرسمية وآخر التعديلات وتاريخ النفاذ قبل الاستشهاد",STATUS_NOTE])
+        rows.append([key,name,num,year,matched,state,"unknown","https://www.moj-ye.org/laws.php","2026-10-11","التحقق من النسخة الرسمية وآخر التعديلات وتاريخ النفاذ قبل الاستشهاد",STATUS_NOTE])
     return csv_text(rows)
 
 def validate(root: Path) -> list[str]:
