@@ -26,5 +26,9 @@ jobs:
         run: python tests/test_case_engine.py
       - name: Run manifest tests
         run: python tests/test_manifest.py
+      - name: Test legal index builder
+        run: python tests/test_indexes.py
+      - name: Validate legal indexes
+        run: python tools/rebuild_indexes.py --check
       - name: Build corpus manifest
         run: python ingestion/corpus_manifest.py --output /tmp/corpus-manifest.json
