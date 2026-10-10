@@ -13,11 +13,15 @@ class IndexBuilderTests(unittest.TestCase):
             (root / "laws/civil-procedure/articles/499.md").write_text("# المادة 499\n", encoding="utf-8")
             (root / "principles/supreme-court").mkdir(parents=True)
             (root / "principles/supreme-court/precedent-x.md").write_text("# سجل أولي\n", encoding="utf-8")
+            (root / "cases/__pycache__").mkdir(parents=True)
+            (root / "cases/__pycache__/case_engine.cpython-312.pyc").write_bytes(b"cache")
             first = build_master(root)
             self.assertEqual(first, build_master(root))
             self.assertIn("laws/civil-procedure/articles/499.md", first)
             self.assertIn("unknown", first)
             self.assertIn("needs-verification", first)
+            self.assertNotIn("__pycache__", first)
+            self.assertNotIn(".pyc", first)
 
     def test_generated_indexes_validate(self):
         with tempfile.TemporaryDirectory() as tmp:
