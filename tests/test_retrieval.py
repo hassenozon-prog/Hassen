@@ -13,16 +13,11 @@ def test_retrieval_finds_article():
         p = Path(d) / "laws" / "criminal-procedure" / "articles"
         p.mkdir(parents=True)
         (p / "367.md").write_text(
-            "# المادة 367
-"
-            "لا يجوز أن يبني الحكم على دليل لم يطرح على المحكمة في الجلسة.
-"
-            "source_type: official_yemeni_statute
-"
-            "verification_status: verified
-"
-            "effective_status: current
-",
+            "# المادة 367\n"
+            "لا يجوز أن يبني الحكم على دليل لم يطرح على المحكمة في الجلسة.\n"
+            "source_type: official_yemeni_statute\n"
+            "verification_status: verified\n"
+            "effective_status: current\n",
             encoding="utf-8",
         )
         r = LegalRetriever(d)
