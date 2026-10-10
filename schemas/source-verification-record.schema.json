@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Yemeni Legal Source Verification Record",
+  "type": "object",
+  "required": ["source_id", "authority", "source_type", "law_name", "law_number", "year", "source_url", "checked_on", "verification_status", "effective_status"],
+  "properties": {
+    "source_id": {"type": "string", "minLength": 1},
+    "authority": {"type": "string", "minLength": 1},
+    "source_type": {"enum": ["official_yemeni_statute", "official_yemeni_regulation", "supreme_court_precedent", "official_ministry", "prosecution", "yemeni_legal_research", "fiqh"]},
+    "law_name": {"type": "string", "minLength": 1},
+    "law_number": {"type": "string", "minLength": 1},
+    "year": {"type": "string", "pattern": "^[0-9]{4}$"},
+    "source_url": {"type": "string", "format": "uri"},
+    "source_locator": {"type": "string"},
+    "checked_on": {"type": "string", "format": "date"},
+    "verification_status": {"enum": ["source-located-not-content-verified", "needs-verification", "partially-verified", "verified", "historical", "superseded"]},
+    "effective_status": {"enum": ["unknown", "current", "historical", "superseded"]},
+    "verified_by": {"type": "string"},
+    "evidence_locator": {"type": "string"},
+    "content_sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+    "notes": {"type": "string"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"verification_status": {"const": "verified"}}},
+      "then": {"required": ["verified_by", "evidence_locator", "content_sha256"]}
+    },
+    {
+      "if": {"properties": {"effective_status": {"const": "current"}}},
+      "then": {"properties": {"verification_status": {"const": "verified"}}}
+    }
+  ],
+  "additionalProperties": false
+}
