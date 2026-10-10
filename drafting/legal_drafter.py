@@ -33,10 +33,8 @@ def draft(issue: dict[str, Any], reasoning: dict[str, Any], mode: str = "legal_a
             "warnings": warnings + ["لا يمكن إنشاء مسودة نهائية موثقة دون مصدر قانوني متحقق."],
         }
 
-    source_lines = "
-".join(f"- {_source_line(s)}" for s in supported)
-    fact_lines = "
-".join(f"- {f}" for f in facts) if facts else "- لم تُقدّم وقائع إضافية."
+    source_lines = "\n".join(f"- {_source_line(s)}" for s in supported)
+    fact_lines = "\n".join(f"- {f}" for f in facts) if facts else "- لم تُقدّم وقائع إضافية."
 
     opening = "وحيث إن" if mode in {"cassation_ground", "defense", "judgment_reasons"} else "ومن حيث إن"
     body = (
