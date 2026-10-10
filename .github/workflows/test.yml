@@ -32,5 +32,7 @@ jobs:
         run: python tests/test_indexes.py
       - name: Validate legal indexes
         run: python tools/rebuild_indexes.py --check
+      - name: Validate legal source verification register
+        run: python tools/validate_source_register.py
       - name: Build corpus manifest
         run: python ingestion/corpus_manifest.py --output /tmp/corpus-manifest.json
