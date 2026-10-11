@@ -14,7 +14,13 @@
     "access_and_use",
     "verification_notes",
     "record_status",
-    "last_checked"
+    "last_checked",
+    "link_status",
+    "last_http_status",
+    "next_review_due",
+    "last_activity_date",
+    "managing_entity_evidence",
+    "source_page_evidence"
   ],
   "properties": {
     "resource_id": {
@@ -65,6 +71,34 @@
     "last_checked": {
       "type": "string",
       "format": "date"
+    },
+    "link_status": {
+      "type": "string",
+      "enum": [
+        "page_found",
+        "platform_homepage_known",
+        "search_landing_page_only",
+        "not_rechecked",
+        "inactive",
+        "blocked",
+        "unknown"
+      ]
+    },
+    "last_http_status": {
+      "type": "string"
+    },
+    "next_review_due": {
+      "type": "string",
+      "format": "date"
+    },
+    "last_activity_date": {
+      "type": "string"
+    },
+    "managing_entity_evidence": {
+      "type": "string"
+    },
+    "source_page_evidence": {
+      "type": "string"
     }
   },
   "additionalProperties": false

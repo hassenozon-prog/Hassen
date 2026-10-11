@@ -61,3 +61,12 @@
 - اختبارات الفهرس: `python tests/test_resource_catalog.py`
 
 يتضمن السجل مصادر يمنية رسمية، وقواعد قانونية عربية، ومكتبات ومراكز أبحاث، وأدوات ذكاء اصطناعي، وروابط بحث لاكتشاف المحتوى القانوني العام في وسائل التواصل. حالة `seeded_candidate` تعني أن المورد مرشح للمراجعة، ولا تعني أن كل محتواه تحقق. أدوات الذكاء الاصطناعي ومنصات التواصل مصنفة للاكتشاف فقط، ولا تمنح وصولًا إلى المحادثات الخاصة أو المجموعات المغلقة.
+
+
+## دليل الجهات القضائية والمجلات والأحكام والقنوات
+- الجهات القضائية الرسمية في 22 دولة عربية: [sources/judiciary-directory.csv](sources/judiciary-directory.csv)
+- بيانات المجلات القانونية المحكمة والمقالات: [sources/legal-journals.csv](sources/legal-journals.csv)
+- سجل الأحكام القضائية الأصلية: [sources/case-law-register.csv](sources/case-law-register.csv)
+- القنوات القانونية المحددة: [sources/legal-media-channels.csv](sources/legal-media-channels.csv)
+- فحص الروابط: `python tools/check_resource_links.py`
+- هذه السجلات متاحة لمحرك الاسترجاع للاكتشاف فقط؛ لا تُعامل بيانات الدليل كمرجع قانوني أو سابقة قضائية موثقة.

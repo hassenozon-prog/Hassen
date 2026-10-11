@@ -32,8 +32,26 @@ def test_retrieval_finds_article():
         assert results
         assert "367.md" in results[0]["path"]
 
+def test_resource_catalog_is_searchable_but_not_authoritative():
+    with tempfile.TemporaryDirectory() as d:
+        root = Path(d)
+        p = root / "sources" / "resource-catalog.csv"
+        p.parent.mkdir(parents=True)
+        p.write_text(
+            "resource_id,name,resource_type,jurisdiction,topics,url,ownership_type,authority_rank,access_and_use,verification_notes,record_status,last_checked\\n"
+            "QA-1,البوابة القانونية القطرية,official_legal_portal,Qatar,تشريعات ومحكمة التمييز,https://www.almeezan.qa/,official,primary,open,verify original,seeded_candidate,2026-10-11\\n",
+            encoding="utf-8",
+        )
+        r = LegalRetriever(root)
+        assert r.build() > 0
+        results = r.search("محكمة التمييز تشريعات قطر")
+        assert results
+        assert results[0]["verification_status"] == "discovery-only"
+        assert results[0]["effective_status"] == "unknown"
+
 if __name__ == "__main__":
     test_arabic_normalization()
     test_retrieval_finds_article()
     test_unsubstantiated_verified_metadata_is_downgraded()
+    test_resource_catalog_is_searchable_but_not_authoritative()
     print("OK")

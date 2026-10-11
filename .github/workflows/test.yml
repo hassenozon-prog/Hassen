@@ -4,6 +4,8 @@ on:
     branches: ["main"]
   pull_request:
     branches: ["main"]
+  schedule:
+    - cron: "23 4 * * 1"
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -42,5 +44,7 @@ jobs:
         run: python tests/test_resource_catalog.py
       - name: Validate legal resource catalog
         run: python tools/validate_resource_catalog.py
+      - name: Check public resource links (non-blocking)
+        run: python tools/check_resource_links.py --report /tmp/resource-link-check.csv
       - name: Build corpus manifest
         run: python ingestion/corpus_manifest.py --output /tmp/corpus-manifest.json

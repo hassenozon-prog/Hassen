@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Lightweight retrieval engine for the Yemeni Legal Assistant."""
 from __future__ import annotations
-import json, re
+import csv, json, re
 from dataclasses import dataclass, asdict
 from pathlib import Path
 from typing import Iterable
@@ -104,8 +104,40 @@ class LegalRetriever:
         self.root = Path(root)
         self.chunks: list[Chunk] = []
 
+    def _catalog_chunks(self, path: Path) -> list[Chunk]:
+        """Load structured discovery catalog rows without treating them as legal authority."""
+        chunks: list[Chunk] = []
+        if not path.exists():
+            return chunks
+        try:
+            with path.open("r", encoding="utf-8-sig", newline="") as stream:
+                rows = list(csv.DictReader(stream))
+        except (OSError, UnicodeDecodeError, csv.Error):
+            return chunks
+        for index, row in enumerate(rows, start=2):
+            title = (row.get("name") or row.get("channel_name") or row.get("journal_title") or row.get("article_title") or row.get("institution_name") or row.get("court_name") or row.get("record_id") or f"record {index}").strip()
+            url = (row.get("url") or row.get("channel_url") or row.get("article_url") or row.get("official_url") or row.get("primary_source_url") or "").strip()
+            # Include metadata fields for lexical discovery, but never elevate catalog entries to legal authority.
+            fields = [f"{key}: {value}" for key, value in row.items() if value and key not in {"url", "channel_url", "article_url", "official_url", "primary_source_url"}]
+            text = "\\n".join(fields + ([f"source_url: {url}"] if url else []))
+            chunks.append(Chunk(
+                path.as_posix(), title, text, "legal_resource_catalog",
+                "discovery-only", "unknown", None, None, None, url or None,
+                row.get("last_checked") or row.get("last_checked_at"), None,
+                row.get("source_evidence") or row.get("evidence_url") or row.get("notes")
+            ))
+        return chunks
+
     def build(self) -> int:
         self.chunks.clear()
+        for catalog in [
+            self.root / "sources" / "resource-catalog.csv",
+            self.root / "sources" / "judiciary-directory.csv",
+            self.root / "sources" / "legal-journals.csv",
+            self.root / "sources" / "case-law-register.csv",
+            self.root / "sources" / "legal-media-channels.csv",
+        ]:
+            self.chunks.extend(self._catalog_chunks(catalog))
         for path in self.root.rglob("*"):
             if not path.is_file() or ".git" in path.parts or ".github" in path.parts:
                 continue

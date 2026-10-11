@@ -8,9 +8,12 @@ ROOT = Path(__file__).resolve().parents[1]
 CATALOG = ROOT / "sources" / "resource-catalog.csv"
 REQUIRED = ["resource_id", "name", "resource_type", "jurisdiction", "topics", "url",
             "ownership_type", "authority_rank", "access_and_use", "verification_notes",
-            "record_status", "last_checked"]
+            "record_status", "last_checked", "link_status", "last_http_status",
+            "next_review_due", "last_activity_date", "managing_entity_evidence",
+            "source_page_evidence"]
 ALLOWED_RANKS = {"primary", "secondary", "discovery_only"}
 ALLOWED_STATUS = {"seeded_candidate", "reviewed", "inactive", "blocked"}
+ALLOWED_LINK_STATUS = {"page_found", "platform_homepage_known", "search_landing_page_only", "not_rechecked", "inactive", "blocked", "unknown"}
 
 def validate(path=CATALOG):
     with path.open("r", encoding="utf-8-sig", newline="") as stream:
@@ -29,6 +32,9 @@ def validate(path=CATALOG):
         if url_key in urls: errors.append(f"line {line}: duplicate URL and resource_type")
         if row["authority_rank"] not in ALLOWED_RANKS: errors.append(f"line {line}: invalid authority_rank")
         if row["record_status"] not in ALLOWED_STATUS: errors.append(f"line {line}: invalid record_status")
+        if row["link_status"] not in ALLOWED_LINK_STATUS: errors.append(f"line {line}: invalid link_status")
+        if not row["next_review_due"].strip(): errors.append(f"line {line}: next_review_due required")
+        if row["link_status"] == "page_found" and not url: errors.append(f"line {line}: page_found requires URL")
         if row["record_status"] == "reviewed" and not row["last_checked"].strip():
             errors.append(f"line {line}: reviewed record requires last_checked")
         discovery_warnings = ("لا تعتمد", "لا تُعامل", "لا تعتبر", "لا تثبت", "لا تمثل", "لا تدخل", "لا تفهرس", "ليس للاستشهاد", "لا تعني", "ليست جهة", "لا يعني", "لا تُدرج", "لا ترفع", "لا لإثبات", "لا يتضمن وصولًا", "لا يوجد وصول", "لا يُعد", "لا تعد", "ليس مصدرًا", "ليست مصدرًا", "للاكتشاف فقط", "بوابة بحث عامة", "لا تمثل قناة", "لا تعتبر مخرجات", "لا تعتبر ملخص", "لا تجعلها بديلًا", "تحقق مستقل من كل اقتباس", "لا تجمع", "ما لم يسند", "رأي أو تحليل")
