@@ -15,7 +15,11 @@ def test_drafter_uses_verified_source():
         {"supported_sources": [{
             "citation": "قانون الإجراءات الجزائية — مادة 367",
             "verification_status": "verified",
-            "effective_status": "current"
+            "effective_status": "current",
+            "official_url": "https://example.gov.ye/law",
+            "verified_on": "2026-10-11",
+            "verified_by": "reviewer",
+            "evidence_locator": "official publication, article 367"
         }], "warnings": []},
         mode="cassation_ground"
     )
