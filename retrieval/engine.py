@@ -32,6 +32,8 @@ class Chunk:
 
     def citation(self) -> str:
         parts = [self.path]
+        if self.path.lower().endswith(".csv"):
+            parts.append(self.title)
         if self.law_number:
             parts.append(f"قانون {self.law_number}")
         if self.article:
@@ -119,7 +121,7 @@ class LegalRetriever:
             url = (row.get("url") or row.get("channel_url") or row.get("article_url") or row.get("official_url") or row.get("primary_source_url") or "").strip()
             # Include metadata fields for lexical discovery, but never elevate catalog entries to legal authority.
             fields = [f"{key}: {value}" for key, value in row.items() if value and key not in {"url", "channel_url", "article_url", "official_url", "primary_source_url"}]
-            text = "\\n".join(fields + ([f"source_url: {url}"] if url else []))
+            text = "\n".join(fields + ([f"source_url: {url}"] if url else []))
             chunks.append(Chunk(
                 path.as_posix(), title, text, "legal_resource_catalog",
                 "discovery-only", "unknown", None, None, None, url or None,
@@ -128,23 +130,77 @@ class LegalRetriever:
             ))
         return chunks
 
-    def build(self) -> int:
-        self.chunks.clear()
-        for catalog in [
-            self.root / "sources" / "resource-catalog.csv",
-            self.root / "sources" / "judiciary-directory.csv",
-            self.root / "sources" / "legal-journals.csv",
-            self.root / "sources" / "case-law-register.csv",
-            self.root / "sources" / "legal-media-channels.csv",
-        ]:
-            self.chunks.extend(self._catalog_chunks(catalog))
-        for path in self.root.rglob("*"):
-            if not path.is_file() or ".git" in path.parts or ".github" in path.parts:
+    def _csv_chunks(self, path: Path) -> list[Chunk]:
+        """Index every CSV register row as searchable metadata, never as automatic legal authority."""
+        chunks: list[Chunk] = []
+        try:
+            with path.open("r", encoding="utf-8-sig", newline="") as stream:
+                rows = list(csv.DictReader(stream))
+        except (OSError, UnicodeDecodeError, csv.Error):
+            return chunks
+        for index, row in enumerate(rows, start=2):
+            row = {str(k or "").strip().lower(): str(v or "").strip() for k, v in row.items()}
+            if not any(row.values()):
                 continue
-            if path.suffix.lower() not in {".md", ".yml", ".yaml", ".json"}:
+            title = next((row.get(k) for k in (
+                "title", "name", "channel_name", "journal_title", "article_title",
+                "institution_name", "court_name", "law_name", "authority", "record_id",
+                "resource_id", "article_record_id", "source_id", "law_key"
+            ) if row.get(k)), f"record {index}")
+            url = next((row.get(k) for k in (
+                "official_url", "official_source_url", "source_url", "primary_source_url",
+                "article_url", "channel_url", "url"
+            ) if row.get(k)), "")
+            status = row.get("verification_status") or row.get("repository_record_status") or "needs-verification"
+            effective = row.get("effective_status") or "unknown"
+            is_directory = any(token in path.name.lower() for token in (
+                "resource-catalog", "judiciary-directory", "legal-journals",
+                "case-law-register", "legal-media-channels"
+            ))
+            if is_directory:
+                status, effective = "discovery-only", "unknown"
+            verified_on = row.get("verified_on") or row.get("last_verified") or row.get("last_checked") or row.get("checked_on")
+            verified_by = row.get("verified_by") or ""
+            locator = row.get("evidence_locator") or row.get("source_locator") or row.get("official_source_locator") or row.get("source_page_evidence") or row.get("notes") or ""
+            evidence_complete = bool(url and verified_on and verified_by and locator)
+            if status == "verified" and not evidence_complete:
+                status = "needs-verification"
+            if effective == "current" and (status != "verified" or not evidence_complete):
+                effective = "unknown"
+            fields = [f"{key}: {value}" for key, value in row.items() if value]
+            text = "\n".join(fields)
+            source_type = (
+                "judiciary_directory" if "judiciary-directory" in path.name else
+                "legal_journal_catalog" if "legal-journals" in path.name else
+                "case_law_register" if "case-law-register" in path.name else
+                "legal_media_channel" if "legal-media-channels" in path.name else
+                "legal_resource_catalog" if "resource-catalog" in path.name else
+                "article_verification_register" if "article-verification" in path.name else
+                "source_verification_register" if "source-verification" in path.name else
+                "structured_register"
+            )
+            chunks.append(Chunk(
+                path.as_posix(), title, text, source_type, status, effective,
+                row.get("article_number") or row.get("article"), row.get("law_number"),
+                row.get("year"), url or None, verified_on or None,
+                verified_by or None, locator or None
+            ))
+        return chunks
+
+    def build(self) -> int:
+        """Rebuild a fresh in-memory index from all supported repository materials."""
+        self.chunks.clear()
+        excluded = {".git", ".github", "__pycache__", ".pytest_cache", ".mypy_cache"}
+        for path in self.root.rglob("*"):
+            if not path.is_file() or any(part in excluded for part in path.parts):
+                continue
+            if path.suffix.lower() == ".csv":
+                self.chunks.extend(self._csv_chunks(path))
+                continue
+            if path.suffix.lower() not in {".md", ".yml", ".yaml", ".json", ".txt", ".rst"}:
                 continue
             try:
-                content = path.read_text(encoding="utf-8")
+                content = path.read_text(encoding="utf-8-sig")
             except (UnicodeDecodeError, OSError):
                 continue
             self.chunks.extend(split_chunks(path, content))

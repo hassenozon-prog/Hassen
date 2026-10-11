@@ -25,9 +25,28 @@ knowledge:
     - "sources/"
     - "research/"
     - "schemas/"
+    - "docs/"
+    - "config/"
+    - "reasoning/"
+    - "drafting/"
+    - "verification/"
+    - "retrieval/"
+    - "api/"
+    - "indexes/"
+    - "ingestion/"
+    - "tools/"
+  automatic_retrieval:
+    required_for_every_legal_query: true
+    index_all_supported_repository_files: true
+    include_csv_registers: true
+    refresh_local_index_each_query: true
+    use_github_connector_if_repository_is_not_locally_available: true
+    cite_exact_repository_path: true
+    never_promote_discovery_metadata_to_legal_authority: true
 
 safety:
   no_invented_law: true
   no_invented_precedent: true
   verify_current_effective_status: true
   disclose_uncertainty: true
+  never_claim_chatgpt_project_is_connected_without_a_verified_runtime_connection: true

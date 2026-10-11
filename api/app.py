@@ -51,7 +51,7 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(404, {"error": "not_found"})
         return self._send(200, {
             "status": "ok", "service": "yemeni-legal-assistant",
-            "version": "1.3", "indexed_chunks": INDEXED_CHUNKS,
+            "version": "1.4", "indexed_chunks": INDEXED_CHUNKS,
             "mode": "local-development" if not os.getenv("API_KEY") else "authenticated"
         })
 
@@ -91,6 +91,10 @@ class Handler(BaseHTTPRequestHandler):
             requested_relief = payload.get("requested_relief")
             requested_relief = str(requested_relief)[:10_000] if requested_relief is not None else None
             mode = str(payload.get("mode", "legal_answer"))
+            # Refresh on every query so newly edited local project materials are included.
+            # The API reads the checked-out repository; sync/pull is required to obtain new GitHub commits.
+            global INDEXED_CHUNKS
+            INDEXED_CHUNKS = retriever.build()
             results = retriever.search_hybrid(question.strip()[:20_000], limit)
             context = answer_context(results)
             verification = verify(results)
@@ -100,7 +104,7 @@ class Handler(BaseHTTPRequestHandler):
                 reasoning, mode
             )
             return self._send(200, {
-                "service": "yemeni-legal-assistant", "version": "1.3",
+                "service": "yemeni-legal-assistant", "version": "1.4",
                 "question": question.strip(),
                 "retrieval": {"indexed_chunks": INDEXED_CHUNKS, "count": len(results),
                               "sources": context["sources"], "context": context["context"]},

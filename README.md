@@ -70,3 +70,10 @@
 - القنوات القانونية المحددة: [sources/legal-media-channels.csv](sources/legal-media-channels.csv)
 - فحص الروابط: `python tools/check_resource_links.py`
 - هذه السجلات متاحة لمحرك الاسترجاع للاكتشاف فقط؛ لا تُعامل بيانات الدليل كمرجع قانوني أو سابقة قضائية موثقة.
+
+
+## استخدام قاعدة Hassen في محادثة «نبراس القانون»
+- تعليمات المشروع الجاهزة للنسخ: [docs/nebras-law-project-instructions.md](docs/nebras-law-project-instructions.md)
+- مخطط OpenAPI لربط GPT Action بعد نشر الخدمة: [api/openapi.json](api/openapi.json)
+- البحث الشامل في مواد المستودع: محرك `retrieval/engine.py` يفهرس Markdown/YAML/JSON/TXT/RST وملفات CSV وسجلات التحقق، وواجهة API تعيد بناء الفهرس قبل كل استعلام.
+- ملاحظة تشغيلية: تحديث ملفات GitHub لا يصل إلى خدمة مستضافة أو نسخة محلية تلقائيًا دون نشر/مزامنة؛ لا يُدّعى اتصال حي غير مختبر.

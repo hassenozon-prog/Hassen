@@ -32,6 +32,25 @@ def test_retrieval_finds_article():
         assert results
         assert "367.md" in results[0]["path"]
 
+def test_all_csv_registers_are_searchable_and_unverified_stays_unverified():
+    with tempfile.TemporaryDirectory() as d:
+        root = Path(d)
+        p = root / "research" / "article-verification-register.csv"
+        p.parent.mkdir(parents=True)
+        p.write_text(
+            "article_record_id,law_name,law_number,year,article_number,repository_path,official_source_url,verification_status,effective_status,last_checked,verified_by,evidence_locator\n"
+            "ART-499,قانون المرافعات والتنفيذ المدني,40,2002,499,laws/civil-procedure/articles/499.md,https://example.gov.ye/law,partially-verified,unknown,2026-10-11,مراجع,صفحة المادة\n",
+            encoding="utf-8",
+        )
+        r = LegalRetriever(root)
+        assert r.build() > 0
+        results = r.search("المادة 499 قانون المرافعات والتنفيذ المدني")
+        assert results
+        item = next(x for x in results if x["path"].endswith("article-verification-register.csv"))
+        assert item["verification_status"] == "partially-verified"
+        assert item["effective_status"] == "unknown"
+        assert item["official_url"] == "https://example.gov.ye/law"
+
 def test_resource_catalog_is_searchable_but_not_authoritative():
     with tempfile.TemporaryDirectory() as d:
         root = Path(d)
@@ -53,4 +72,5 @@ if __name__ == "__main__":
     test_retrieval_finds_article()
     test_unsubstantiated_verified_metadata_is_downgraded()
     test_resource_catalog_is_searchable_but_not_authoritative()
+    test_all_csv_registers_are_searchable_and_unverified_stays_unverified()
     print("OK")

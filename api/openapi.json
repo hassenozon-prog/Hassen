@@ -1,0 +1,133 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Nebras Al-Qanun — Yemeni Legal Knowledge API",
+    "version": "1.4.0",
+    "description": "Searches the Hassen repository's checked-out legal knowledge base and returns ranked records with verification metadata. Discovery records are not legal authority."
+  },
+  "servers": [
+    {
+      "url": "https://YOUR-DEPLOYMENT-HOST",
+      "description": "Replace with the actual HTTPS deployment URL before configuring a ChatGPT Action."
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "healthCheck",
+        "summary": "Check service health and indexed corpus size",
+        "responses": {
+          "200": {
+            "description": "Health status"
+          }
+        }
+      }
+    },
+    "/query": {
+      "post": {
+        "operationId": "searchLegalKnowledge",
+        "summary": "Search the Hassen legal knowledge base for every legal question",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "question"
+                ],
+                "properties": {
+                  "question": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Legal question in Arabic or another supported language"
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 20,
+                    "default": 8
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "legal_answer",
+                      "cassation_ground",
+                      "defense",
+                      "prosecution_decision",
+                      "judgment_reasons"
+                    ]
+                  },
+                  "facts": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "requested_relief": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retrieved sources, verification report, reasoning and draft"
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid API key"
+          }
+        }
+      }
+    },
+    "/case": {
+      "post": {
+        "operationId": "analyzeLegalCase",
+        "summary": "Analyze structured case information using the legal case engine",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Structured case analysis"
+          },
+          "401": {
+            "description": "Missing or invalid API key"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "API key"
+      }
+    }
+  }
+}

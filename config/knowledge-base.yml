@@ -59,6 +59,8 @@ retrieval:
     - markdown
     - yaml
     - json
+    - csv
+    - text
   exact_article_match: true
   preserve_source_path: true
   preserve_article_number: true

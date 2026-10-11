@@ -1,6 +1,11 @@
 version: "1.0"
 query_processing:
   normalize_arabic: true
+  search_all_project_materials_each_query: true
+  index_structured_csv_registers: true
+  refresh_index_before_each_api_query: true
+  include_resource_directories_for_discovery_only: true
+  expose_source_path_and_verification_status: true
   preserve_article_numbers: true
   preserve_law_numbers: true
   preserve_case_numbers: true
@@ -21,6 +26,13 @@ retrieval_order:
   - case_records
   - fiqh
   - research_notes
+  - source_verification_register
+  - article_verification_register
+  - judiciary_directory
+  - legal_journals
+  - case_law_register
+  - legal_media_channels
+  - resource_catalog
 
 cross_link_rules:
   law_article_to_principles: true
