@@ -29,9 +29,10 @@
 ## Docker
 
     docker build -t yemeni-legal-assistant .
-    docker run --rm -p 8080:8080 yemeni-legal-assistant
+    export API_KEY="$(python -c 'import secrets; print(secrets.token_urlsafe(32))')"
+    docker run --rm -p 8080:8080 -e API_KEY="$API_KEY" yemeni-legal-assistant
 
-قبل النشر العام يجب إضافة Authentication وRate limiting وCORS مقيد ومراقبة السجلات، وعدم إدخال أسرار في المستودع.
+لا تشغّل Docker مع `0.0.0.0` دون `API_KEY`. يلزم للنشر العام TLS وreverse proxy مع Rate limiting ومراقبة آمنة للسجلات؛ لا تضع الأسرار في المستودع.
 
 
 ## ضوابط تشغيل الواجهة (الإصدار 1.3)
