@@ -51,3 +51,13 @@
 - فحص سجل المصادر: `python tools/validate_source_register.py`.
 - تشغيل الاختبارات: راجع [دليل التشغيل](docs/operational-runbook.md) أو تابع نتيجة [GitHub Actions](https://github.com/hassenozon-prog/Hassen/actions).
 - لا تستخدم الخدمة كمرجع قانوني نهائي قبل التحقق من النص الرسمي والتعديلات والنفاذ؛ نجاح الاختبارات لا يثبت صحة كل مادة.
+
+
+## دليل الموارد القانونية اليمنية والعربية والرقمية
+- فهرس المواقع والمكتبات والمنصات: [sources/resource-catalog.csv](sources/resource-catalog.csv)
+- الدليل ومراتب الاستناد وسياسة الخصوصية والتحقق: [docs/legal-resource-directory.md](docs/legal-resource-directory.md)
+- مخطط سجل الموارد: [schemas/resource-catalog.schema.json](schemas/resource-catalog.schema.json)
+- فحص الفهرس: `python tools/validate_resource_catalog.py`
+- اختبارات الفهرس: `python tests/test_resource_catalog.py`
+
+يتضمن السجل مصادر يمنية رسمية، وقواعد قانونية عربية، ومكتبات ومراكز أبحاث، وأدوات ذكاء اصطناعي، وروابط بحث لاكتشاف المحتوى القانوني العام في وسائل التواصل. حالة `seeded_candidate` تعني أن المورد مرشح للمراجعة، ولا تعني أن كل محتواه تحقق. أدوات الذكاء الاصطناعي ومنصات التواصل مصنفة للاكتشاف فقط، ولا تمنح وصولًا إلى المحادثات الخاصة أو المجموعات المغلقة.
