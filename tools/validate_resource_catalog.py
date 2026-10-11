@@ -25,15 +25,17 @@ def validate(path=CATALOG):
         if not rid or rid in ids: errors.append(f"line {line}: missing/duplicate resource_id")
         if not row["name"].strip(): errors.append(f"line {line}: missing name")
         if parsed.scheme != "https" or not parsed.netloc: errors.append(f"line {line}: URL must be https")
-        if url in urls: errors.append(f"line {line}: duplicate URL")
+        url_key = (url, row["resource_type"].strip())
+        if url_key in urls: errors.append(f"line {line}: duplicate URL and resource_type")
         if row["authority_rank"] not in ALLOWED_RANKS: errors.append(f"line {line}: invalid authority_rank")
         if row["record_status"] not in ALLOWED_STATUS: errors.append(f"line {line}: invalid record_status")
         if row["record_status"] == "reviewed" and not row["last_checked"].strip():
             errors.append(f"line {line}: reviewed record requires last_checked")
-        discovery_warnings = ("لا تعتمد", "لا تُعامل", "لا تعتبر", "لا تثبت", "لا تمثل", "لا تدخل", "لا تفهرس", "ليس للاستشهاد", "لا تعني", "ليست جهة", "لا يعني", "لا تُدرج", "لا ترفع")
-        if row["authority_rank"] == "discovery_only" and not any(warning in row["verification_notes"] for warning in discovery_warnings):
+        discovery_warnings = ("لا تعتمد", "لا تُعامل", "لا تعتبر", "لا تثبت", "لا تمثل", "لا تدخل", "لا تفهرس", "ليس للاستشهاد", "لا تعني", "ليست جهة", "لا يعني", "لا تُدرج", "لا ترفع", "لا لإثبات", "لا يتضمن وصولًا", "لا يوجد وصول", "لا يُعد", "لا تعد", "ليس مصدرًا", "ليست مصدرًا", "للاكتشاف فقط", "بوابة بحث عامة", "لا تمثل قناة", "لا تعتبر مخرجات", "لا تعتبر ملخص", "لا تجعلها بديلًا", "تحقق مستقل من كل اقتباس")
+        combined_note = row["verification_notes"] + " " + row["access_and_use"]
+        if row["authority_rank"] == "discovery_only" and not any(warning in combined_note for warning in discovery_warnings):
             errors.append(f"line {line}: discovery-only record must disclose non-authoritative use")
-        ids.add(rid); urls.add(url)
+        ids.add(rid); urls.add(url_key)
     if errors: raise ValueError("\n".join(errors))
     return len(rows)
 
