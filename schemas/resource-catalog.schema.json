@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Legal Resource Catalog Record",
+  "type": "object",
+  "required": [
+    "resource_id",
+    "name",
+    "resource_type",
+    "jurisdiction",
+    "topics",
+    "url",
+    "ownership_type",
+    "authority_rank",
+    "access_and_use",
+    "verification_notes",
+    "record_status",
+    "last_checked"
+  ],
+  "properties": {
+    "resource_id": {
+      "type": "string",
+      "minLength": 3
+    },
+    "name": {
+      "type": "string",
+      "minLength": 2
+    },
+    "resource_type": {
+      "type": "string"
+    },
+    "jurisdiction": {
+      "type": "string"
+    },
+    "topics": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "ownership_type": {
+      "type": "string"
+    },
+    "authority_rank": {
+      "enum": [
+        "primary",
+        "secondary",
+        "discovery_only"
+      ]
+    },
+    "access_and_use": {
+      "type": "string"
+    },
+    "verification_notes": {
+      "type": "string"
+    },
+    "record_status": {
+      "enum": [
+        "seeded_candidate",
+        "reviewed",
+        "inactive",
+        "blocked"
+      ]
+    },
+    "last_checked": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "additionalProperties": false
+}
