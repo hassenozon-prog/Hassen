@@ -20,12 +20,23 @@ def _valid_date(value: Any) -> bool:
     except ValueError:
         return False
 
+def has_traceable_current_evidence(record: dict[str, Any]) -> bool:
+    """True only when the record has both a current claim and traceable review evidence."""
+    return bool(
+        record.get("verification_status") == "verified"
+        and record.get("effective_status") == "current"
+        and _has_http_url(record.get("official_url"))
+        and _valid_date(record.get("verified_on"))
+        and isinstance(record.get("verified_by"), str) and record.get("verified_by").strip()
+        and isinstance(record.get("evidence_locator"), str) and record.get("evidence_locator").strip()
+    )
+
 def _has_verification_evidence(record: dict[str, Any]) -> bool:
     return bool(
         _has_http_url(record.get("official_url"))
         and _valid_date(record.get("verified_on"))
-        and record.get("verified_by")
-        and record.get("evidence_locator")
+        and isinstance(record.get("verified_by"), str) and record.get("verified_by").strip()
+        and isinstance(record.get("evidence_locator"), str) and record.get("evidence_locator").strip()
     )
 
 def verify(results: list[dict[str, Any]]) -> dict[str, Any]:
@@ -42,7 +53,7 @@ def verify(results: list[dict[str, Any]]) -> dict[str, Any]:
             "effective_status": effective,
             "evidence_complete": evidence_ok,
         }
-        if status == "verified" and effective == "current" and evidence_ok:
+        if has_traceable_current_evidence(r):
             verified.append(item)
         else:
             if status == "verified" and not evidence_ok:
