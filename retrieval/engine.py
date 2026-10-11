@@ -197,7 +197,12 @@ class LegalRetriever:
             if path.suffix.lower() == ".csv":
                 self.chunks.extend(self._csv_chunks(path))
                 continue
-            if path.suffix.lower() not in {".md", ".yml", ".yaml", ".json", ".txt", ".rst"}:
+            text_suffixes = {
+                ".md", ".yml", ".yaml", ".json", ".txt", ".rst", ".py",
+                ".html", ".htm", ".xml", ".toml", ".ini", ".sh", ".sql",
+                ".js", ".ts", ".css", ".conf", ".cfg"
+            }
+            if path.suffix.lower() not in text_suffixes and path.name not in {"Dockerfile", "Makefile", "CONTRIBUTING"}:
                 continue
             try:
                 content = path.read_text(encoding="utf-8-sig")

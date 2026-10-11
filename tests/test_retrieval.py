@@ -32,6 +32,20 @@ def test_retrieval_finds_article():
         assert results
         assert "367.md" in results[0]["path"]
 
+def test_project_source_code_is_indexed_as_reference_not_legal_authority():
+    with tempfile.TemporaryDirectory() as d:
+        root = Path(d)
+        p = root / "retrieval" / "sample_engine.py"
+        p.parent.mkdir(parents=True)
+        p.write_text("# Sample retrieval module\ndef find_statute():\n    return 'المادة 499 منازعة تنفيذ'\n", encoding="utf-8")
+        r = LegalRetriever(root)
+        assert r.build() > 0
+        results = r.search("sample retrieval module المادة 499")
+        assert results
+        assert any(x["path"].endswith("sample_engine.py") for x in results)
+        item = next(x for x in results if x["path"].endswith("sample_engine.py"))
+        assert item["effective_status"] == "unknown"
+
 def test_all_csv_registers_are_searchable_and_unverified_stays_unverified():
     with tempfile.TemporaryDirectory() as d:
         root = Path(d)
@@ -73,4 +87,5 @@ if __name__ == "__main__":
     test_unsubstantiated_verified_metadata_is_downgraded()
     test_resource_catalog_is_searchable_but_not_authoritative()
     test_all_csv_registers_are_searchable_and_unverified_stays_unverified()
+    test_project_source_code_is_indexed_as_reference_not_legal_authority()
     print("OK")

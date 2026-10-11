@@ -75,5 +75,5 @@
 ## استخدام قاعدة Hassen في محادثة «نبراس القانون»
 - تعليمات المشروع الجاهزة للنسخ: [docs/nebras-law-project-instructions.md](docs/nebras-law-project-instructions.md)
 - مخطط OpenAPI لربط GPT Action بعد نشر الخدمة: [api/openapi.json](api/openapi.json)
-- البحث الشامل في مواد المستودع: محرك `retrieval/engine.py` يفهرس Markdown/YAML/JSON/TXT/RST وملفات CSV وسجلات التحقق، وواجهة API تعيد بناء الفهرس قبل كل استعلام.
+- البحث الشامل في مواد المستودع: محرك `retrieval/engine.py` يفهرس ملفات النص المدعومة (بما فيها Python وMarkdown وYAML وJSON وHTML وملفات الإعداد) وملفات CSV وسجلات التحقق، وواجهة API تعيد بناء الفهرس قبل كل استعلام.
 - ملاحظة تشغيلية: تحديث ملفات GitHub لا يصل إلى خدمة مستضافة أو نسخة محلية تلقائيًا دون نشر/مزامنة؛ لا يُدّعى اتصال حي غير مختبر.
