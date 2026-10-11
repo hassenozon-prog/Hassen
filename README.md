@@ -41,3 +41,13 @@
 - فحص السجل: `python tools/validate_source_register.py`
 - بوابة التحقق لا تقبل مرجعًا بوصفه `verified/current` إلا مع رابط مصدر وتاريخ تحقق واسم المراجع وموضع دليل التحقق.
 - وجود رابط إلى فهرس رسمي لا يعني أن كل مادة في القانون أو حالة نفاذها قد تحققت؛ سجل المصدر يميز بين العثور على المصدر والتحقق من محتواه.
+
+
+## تشغيل الواجهة البرمجية الآمن
+- التشغيل المحلي: `python -m api.app` ثم فحص `GET http://127.0.0.1:8080/health`.
+- لاستخدام الواجهة خارج الجهاز المحلي، اضبط `API_KEY` بمفتاح قوي قبل تعيين `HOST=0.0.0.0`. أرسل الطلبات مع `Authorization: Bearer <API_KEY>`.
+- مثال استعلام: `curl -X POST http://127.0.0.1:8080/query -H 'Content-Type: application/json' -d '{"question":"المادة 499 منازعة تنفيذ"}'`.
+- فحص سجل المواد: `python tools/validate_article_register.py`.
+- فحص سجل المصادر: `python tools/validate_source_register.py`.
+- تشغيل الاختبارات: راجع [دليل التشغيل](docs/operational-runbook.md) أو تابع نتيجة [GitHub Actions](https://github.com/hassenozon-prog/Hassen/actions).
+- لا تستخدم الخدمة كمرجع قانوني نهائي قبل التحقق من النص الرسمي والتعديلات والنفاذ؛ نجاح الاختبارات لا يثبت صحة كل مادة.
