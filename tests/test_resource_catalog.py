@@ -1,5 +1,7 @@
 from pathlib import Path
-import tempfile
+import sys, tempfile
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 from tools.validate_resource_catalog import validate
 
 def test_catalog_has_records():
