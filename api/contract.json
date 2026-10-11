@@ -1,6 +1,6 @@
 {
   "name": "yemeni-legal-assistant-api",
-  "version": "1.0",
+  "version": "1.3",
   "endpoints": {
     "GET /health": {
       "response": {
@@ -10,16 +10,21 @@
       }
     },
     "POST /query": {
+      "authentication": "Authorization: Bearer <API_KEY> when API_KEY is configured",
+      "limits": {"max_body_bytes": 1000000, "limit_min": 1, "limit_max": 20},
       "request": {
-        "question": "string",
-        "facts": "array",
+        "question": "string (required)",
+        "facts": "array|string (optional)",
         "requested_relief": "string|null",
-        "limit": "integer 1..20"
+        "limit": "integer 1..20 (default 8)",
+        "mode": "legal_answer|cassation_ground|defense|prosecution_decision|judgment_reasons"
       },
       "response": {
         "retrieval": "object",
         "reasoning": "object",
-        "notice": "string"
+        "notice": "string",
+        "verification": "object containing verified_current and needs_review",
+        "drafting": "object; final draft withheld if no source has traceable current verification evidence"
       }
     }
   }
