@@ -31,7 +31,7 @@ def validate(path=CATALOG):
         if row["record_status"] not in ALLOWED_STATUS: errors.append(f"line {line}: invalid record_status")
         if row["record_status"] == "reviewed" and not row["last_checked"].strip():
             errors.append(f"line {line}: reviewed record requires last_checked")
-        discovery_warnings = ("لا تعتمد", "لا تُعامل", "لا تعتبر", "لا تثبت", "لا تمثل", "لا تدخل", "لا تفهرس", "ليس للاستشهاد", "لا تعني", "ليست جهة", "لا يعني", "لا تُدرج", "لا ترفع", "لا لإثبات", "لا يتضمن وصولًا", "لا يوجد وصول", "لا يُعد", "لا تعد", "ليس مصدرًا", "ليست مصدرًا", "للاكتشاف فقط", "بوابة بحث عامة", "لا تمثل قناة", "لا تعتبر مخرجات", "لا تعتبر ملخص", "لا تجعلها بديلًا", "تحقق مستقل من كل اقتباس")
+        discovery_warnings = ("لا تعتمد", "لا تُعامل", "لا تعتبر", "لا تثبت", "لا تمثل", "لا تدخل", "لا تفهرس", "ليس للاستشهاد", "لا تعني", "ليست جهة", "لا يعني", "لا تُدرج", "لا ترفع", "لا لإثبات", "لا يتضمن وصولًا", "لا يوجد وصول", "لا يُعد", "لا تعد", "ليس مصدرًا", "ليست مصدرًا", "للاكتشاف فقط", "بوابة بحث عامة", "لا تمثل قناة", "لا تعتبر مخرجات", "لا تعتبر ملخص", "لا تجعلها بديلًا", "تحقق مستقل من كل اقتباس", "لا تجمع", "ما لم يسند", "رأي أو تحليل")
         combined_note = row["verification_notes"] + " " + row["access_and_use"]
         if row["authority_rank"] == "discovery_only" and not any(warning in combined_note for warning in discovery_warnings):
             errors.append(f"line {line}: discovery-only record must disclose non-authoritative use")
