@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Judicial Decision Source Record",
+  "type": "object",
+  "required": [
+    "record_id",
+    "jurisdiction",
+    "court_name",
+    "court_chamber",
+    "case_number",
+    "decision_number",
+    "decision_date",
+    "publication_date",
+    "case_subject",
+    "keywords",
+    "primary_source_url",
+    "official_report_or_gazette",
+    "paragraph_or_page",
+    "source_authenticity_status",
+    "finality_or_status",
+    "access_status",
+    "last_checked",
+    "notes"
+  ],
+  "properties": {
+    "record_id": {
+      "type": "string"
+    },
+    "jurisdiction": {
+      "type": "string"
+    },
+    "court_name": {
+      "type": "string"
+    },
+    "court_chamber": {
+      "type": "string"
+    },
+    "case_number": {
+      "type": "string"
+    },
+    "decision_number": {
+      "type": "string"
+    },
+    "decision_date": {
+      "type": "string"
+    },
+    "publication_date": {
+      "type": "string"
+    },
+    "case_subject": {
+      "type": "string"
+    },
+    "keywords": {
+      "type": "string"
+    },
+    "primary_source_url": {
+      "type": "string"
+    },
+    "official_report_or_gazette": {
+      "type": "string"
+    },
+    "paragraph_or_page": {
+      "type": "string"
+    },
+    "source_authenticity_status": {
+      "type": "string"
+    },
+    "finality_or_status": {
+      "type": "string"
+    },
+    "access_status": {
+      "type": "string"
+    },
+    "last_checked": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Legal Journal Article Record",
+  "type": "object",
+  "required": [
+    "record_id",
+    "journal_title",
+    "publisher",
+    "country",
+    "peer_review_status",
+    "volume",
+    "issue",
+    "article_title",
+    "author_names",
+    "page_start",
+    "page_end",
+    "publication_date",
+    "doi",
+    "article_url",
+    "access_status",
+    "metadata_status",
+    "last_checked",
+    "notes"
+  ],
+  "properties": {
+    "record_id": {
+      "type": "string"
+    },
+    "journal_title": {
+      "type": "string"
+    },
+    "publisher": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string"
+    },
+    "issn": {
+      "type": "string"
+    },
+    "volume": {
+      "type": "string"
+    },
+    "issue": {
+      "type": "string"
+    },
+    "article_title": {
+      "type": "string"
+    },
+    "author_names": {
+      "type": "string"
+    },
+    "page_start": {
+      "type": "string"
+    },
+    "page_end": {
+      "type": "string"
+    },
+    "publication_date": {
+      "type": "string"
+    },
+    "doi": {
+      "type": "string"
+    },
+    "article_url": {
+      "type": "string"
+    },
+    "access_status": {
+      "type": "string"
+    },
+    "metadata_status": {
+      "type": "string"
+    },
+    "last_checked": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "peer_review_status": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

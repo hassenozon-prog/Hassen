@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Arab Judiciary Directory Record",
+  "type": "object",
+  "required": [
+    "record_id",
+    "country_code",
+    "country_ar",
+    "country_en",
+    "institution_type",
+    "institution_name",
+    "official_url",
+    "url_status",
+    "access_conditions",
+    "last_checked",
+    "next_review_due",
+    "notes"
+  ],
+  "properties": {
+    "record_id": {
+      "type": "string"
+    },
+    "country_code": {
+      "type": "string",
+      "minLength": 2
+    },
+    "country_ar": {
+      "type": "string"
+    },
+    "country_en": {
+      "type": "string"
+    },
+    "institution_type": {
+      "enum": [
+        "highest_court",
+        "public_prosecution",
+        "ministry_of_justice",
+        "official_gazette"
+      ]
+    },
+    "institution_name": {
+      "type": "string"
+    },
+    "official_url": {
+      "type": "string"
+    },
+    "url_status": {
+      "type": "string"
+    },
+    "access_conditions": {
+      "type": "string"
+    },
+    "last_checked": {
+      "type": "string"
+    },
+    "last_http_status": {
+      "type": "string"
+    },
+    "last_activity_date": {
+      "type": "string"
+    },
+    "next_review_due": {
+      "type": "string"
+    },
+    "source_evidence": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

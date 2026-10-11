@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Legal Media Channel Record",
+  "type": "object",
+  "required": [
+    "record_id",
+    "channel_name",
+    "platform",
+    "jurisdiction",
+    "managing_entity",
+    "channel_url",
+    "identity_status",
+    "activity_status",
+    "last_activity_date",
+    "last_checked",
+    "access_conditions",
+    "evidence_url",
+    "authority_rank",
+    "notes"
+  ],
+  "properties": {
+    "record_id": {
+      "type": "string"
+    },
+    "channel_name": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string"
+    },
+    "jurisdiction": {
+      "type": "string"
+    },
+    "managing_entity": {
+      "type": "string"
+    },
+    "channel_url": {
+      "type": "string"
+    },
+    "identity_status": {
+      "type": "string"
+    },
+    "activity_status": {
+      "type": "string"
+    },
+    "last_activity_date": {
+      "type": "string"
+    },
+    "last_checked": {
+      "type": "string"
+    },
+    "access_conditions": {
+      "type": "string"
+    },
+    "evidence_url": {
+      "type": "string"
+    },
+    "authority_rank": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}
