@@ -38,5 +38,9 @@ jobs:
         run: python tools/validate_article_register.py
       - name: Test article register validator
         run: python tests/test_article_register.py
+      - name: Test legal resource catalog validator
+        run: python tests/test_resource_catalog.py
+      - name: Validate legal resource catalog
+        run: python tools/validate_resource_catalog.py
       - name: Build corpus manifest
         run: python ingestion/corpus_manifest.py --output /tmp/corpus-manifest.json
