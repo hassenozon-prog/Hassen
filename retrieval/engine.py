@@ -25,6 +25,10 @@ class Chunk:
     article: str | None = None
     law_number: str | None = None
     year: str | None = None
+    official_url: str | None = None
+    verified_on: str | None = None
+    verified_by: str | None = None
+    evidence_locator: str | None = None
 
     def citation(self) -> str:
         parts = [self.path]
@@ -51,14 +55,30 @@ def yaml_scalar(content: str, key: str) -> str | None:
     return m.group(1).strip() if m else None
 
 def extract_metadata(path: Path, content: str) -> dict:
+    status = yaml_scalar(content, "verification_status") or "needs-verification"
+    effective = yaml_scalar(content, "effective_status") or "unknown"
+    official_url = yaml_scalar(content, "official_url") or yaml_scalar(content, "url")
+    verified_on = yaml_scalar(content, "verified_on") or yaml_scalar(content, "last_verified")
+    verified_by = yaml_scalar(content, "verified_by")
+    evidence_locator = yaml_scalar(content, "evidence_locator")
+    evidence_complete = bool(official_url and verified_on and verified_by and evidence_locator)
+    # Metadata labels are not evidence. Downgrade any unsupported claim before ranking/reasoning.
+    if status == "verified" and not evidence_complete:
+        status = "needs-verification"
+    if effective == "current" and (status != "verified" or not evidence_complete):
+        effective = "unknown"
     return {
         "title": yaml_scalar(content, "title") or path.stem,
         "source_type": yaml_scalar(content, "source_type") or "repository_document",
-        "verification_status": yaml_scalar(content, "verification_status") or "needs-verification",
-        "effective_status": yaml_scalar(content, "effective_status") or "unknown",
+        "verification_status": status,
+        "effective_status": effective,
         "article": yaml_scalar(content, "article"),
         "law_number": yaml_scalar(content, "law_number"),
         "year": yaml_scalar(content, "year"),
+        "official_url": official_url,
+        "verified_on": verified_on,
+        "verified_by": verified_by,
+        "evidence_locator": evidence_locator,
     }
 
 def split_chunks(path: Path, content: str, max_chars: int = 1800) -> Iterable[Chunk]:
@@ -74,7 +94,9 @@ def split_chunks(path: Path, content: str, max_chars: int = 1800) -> Iterable[Ch
                 yield Chunk(
                     path.as_posix(), meta["title"], piece, meta["source_type"],
                     meta["verification_status"], meta["effective_status"],
-                    meta["article"], meta["law_number"], meta["year"]
+                    meta["article"], meta["law_number"], meta["year"],
+                    meta["official_url"], meta["verified_on"], meta["verified_by"],
+                    meta["evidence_locator"]
                 )
 
 class LegalRetriever:
@@ -133,6 +155,10 @@ def answer_context(results: list[dict]) -> dict:
                 "path": r["path"],
                 "verification_status": r["verification_status"],
                 "effective_status": r["effective_status"],
+                "official_url": r.get("official_url"),
+                "verified_on": r.get("verified_on"),
+                "verified_by": r.get("verified_by"),
+                "evidence_locator": r.get("evidence_locator"),
                 "score": r["score"],
             } for r in results
         ],
