@@ -30,7 +30,8 @@ def validate(path=CATALOG):
         if row["record_status"] not in ALLOWED_STATUS: errors.append(f"line {line}: invalid record_status")
         if row["record_status"] == "reviewed" and not row["last_checked"].strip():
             errors.append(f"line {line}: reviewed record requires last_checked")
-        if row["authority_rank"] == "discovery_only" and "لا تعتمد" not in row["verification_notes"] and "لا تُعامل" not in row["verification_notes"] and "لا تعتبر" not in row["verification_notes"]:
+        discovery_warnings = ("لا تعتمد", "لا تُعامل", "لا تعتبر", "لا تثبت", "لا تمثل", "لا تدخل", "لا تفهرس", "ليس للاستشهاد", "لا تعني", "ليست جهة", "لا يعني", "لا تُدرج", "لا ترفع")
+        if row["authority_rank"] == "discovery_only" and not any(warning in row["verification_notes"] for warning in discovery_warnings):
             errors.append(f"line {line}: discovery-only record must disclose non-authoritative use")
         ids.add(rid); urls.add(url)
     if errors: raise ValueError("\n".join(errors))
