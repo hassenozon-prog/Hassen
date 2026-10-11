@@ -6,6 +6,7 @@ It deliberately refuses to manufacture authorities, facts, or case numbers.
 """
 from __future__ import annotations
 from typing import Any
+from verification.verifier import has_traceable_current_evidence
 
 STYLE = {
     "cassation_ground": "سبب طعن بالنقض",
@@ -20,8 +21,11 @@ def _source_line(source: dict[str, Any]) -> str:
 
 def draft(issue: dict[str, Any], reasoning: dict[str, Any], mode: str = "legal_answer") -> dict[str, Any]:
     mode = mode if mode in STYLE else "legal_answer"
-    supported = reasoning.get("supported_sources", [])
-    warnings = reasoning.get("warnings", [])
+    candidates = reasoning.get("supported_sources", [])
+    supported = [s for s in candidates if isinstance(s, dict) and has_traceable_current_evidence(s)]
+    warnings = list(reasoning.get("warnings", []))
+    if candidates and not supported:
+        warnings.append("رُفضت المصادر التي لا تحمل دليل تحقق قابلًا للتتبع وإثباتًا لحالة النفاذ الحالية.")
     question = issue.get("question", "")
     facts = issue.get("facts", [])
     if not supported:
