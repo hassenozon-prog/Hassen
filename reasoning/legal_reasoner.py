@@ -5,6 +5,7 @@ import json
 import re
 from dataclasses import dataclass, asdict
 from typing import Any
+from verification.verifier import has_traceable_current_evidence
 
 @dataclass
 class LegalIssue:
@@ -52,8 +53,7 @@ def build_reasoning(question: str, results: list[dict[str, Any]], facts: list[st
     ranked = sorted(results, key=source_strength, reverse=True)
     issue_type = classify_issue(question)
 
-    supported = [r for r in ranked if r.get("verification_status") == "verified"
-                 and r.get("effective_status") != "superseded"]
+    supported = [r for r in ranked if has_traceable_current_evidence(r)]
     uncertain = [r for r in ranked if r not in supported]
 
     propositions = []
