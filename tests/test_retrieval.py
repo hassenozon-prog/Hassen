@@ -37,10 +37,10 @@ def test_resource_catalog_is_searchable_but_not_authoritative():
         root = Path(d)
         p = root / "sources" / "resource-catalog.csv"
         p.parent.mkdir(parents=True)
-        p.write_text("\\n".join([
+        p.write_text("\n".join([
             "resource_id,name,resource_type,jurisdiction,topics,url,ownership_type,authority_rank,access_and_use,verification_notes,record_status,last_checked",
             "QA-1,البوابة القانونية القطرية,official_legal_portal,Qatar,تشريعات ومحكمة التمييز,https://www.almeezan.qa/,official,primary,open,verify original,seeded_candidate,2026-10-11",
-        ]) + "\\n", encoding="utf-8")
+        ]) + "\n", encoding="utf-8")
         r = LegalRetriever(root)
         assert r.build() > 0
         results = r.search("محكمة التمييز تشريعات قطر")
